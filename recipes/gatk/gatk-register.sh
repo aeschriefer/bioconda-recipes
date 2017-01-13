@@ -5,6 +5,7 @@
 # Find original directory of bash script, resovling symlinks
 # http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in/246128#246128
 SOURCE="${BASH_SOURCE[0]}"
+CONDA_BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
     DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
     SOURCE="$(readlink "$SOURCE")"
@@ -12,8 +13,8 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 ENV_PREFIX="$(dirname $(dirname $DIR))"
-# Use Java installed with Anaconda to ensure correct version
-JAVA="$ENV_PREFIX/bin/java"
+# Use Java installed in active conda environment to ensure correct version
+JAVA="${CONDA_BIN_DIR}/java"
 
 
 function print_license_notice(){
